@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!-- design/build_site.py 로 생성. 직접 고치지 말 것 -->
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>세액공제 계산기 A/B 실험 · 정예린</title><meta name="description" content="무엇을 결정할지 먼저 정하고 그에 맞춰 실험을 설계했으며, 무작위 비교로만 판정해 기존안 유지 결정에 참여"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><style>
+:root{--bg:#100c19;--surface:#191426;--surface-2:#1f1930;--line:#2c2540;--text:#ece8f4;--muted:#a99fbb;--faint:#6f6683;
+--accent:#bda4ff;--accent-soft:#261c40;--accent-2:#ff9ec9;--good:#3ad6a0;--radius:18px;--maxw:980px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:var(--bg);color:var(--text);
+line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;word-break:keep-all}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}b,strong{font-weight:700;color:var(--text)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}.accent{color:var(--accent)}
+nav.top{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(16,12,25,.72);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+nav.top .brand{font-weight:800;letter-spacing:-.02em}nav.top .menu{display:flex;gap:22px}
+nav.top .menu a{color:var(--muted);font-size:.9rem;font-weight:500;transition:.15s}nav.top .menu a:hover{color:var(--text)}
+header.hero{padding:92px 0 60px;position:relative;overflow:hidden;background:radial-gradient(900px 420px at 82% -8%,rgba(189,164,255,.18),transparent 60%),radial-gradient(720px 380px at -5% 5%,rgba(255,158,201,.13),transparent 55%)}
+.hero-grid{display:block}
+.eyebrow{color:var(--accent);font-weight:600;font-size:.9rem;letter-spacing:.05em;margin-bottom:16px}
+h1.big{font-size:clamp(2.2rem,5.6vw,3.3rem);font-weight:800;line-height:1.15;letter-spacing:-.035em}
+.hero .tagline{font-size:clamp(1.1rem,2.6vw,1.4rem);margin-top:18px;font-weight:600}
+.hero .lead{color:var(--muted);margin-top:16px;font-size:.98rem;letter-spacing:-.02em}
+@media (min-width:1000px){.hero .lead{white-space:nowrap}}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 17px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font-size:.9rem;font-weight:500;transition:.18s}
+.btn:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#0a0e15;font-weight:700}
+.btn.off{color:var(--faint);cursor:default}.btn.off:hover{transform:none;border-color:var(--line);background:var(--surface)}
+.btn small{font-size:.72rem}
+.portrait{width:200px;height:250px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(189,164,255,.16),rgba(255,158,201,.12)),var(--surface-2);padding:14px;overflow:hidden}
+.portrait img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 18px}
+.stat .v{font-size:1.8rem;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+.stat .l{color:var(--muted);font-size:.82rem;margin-top:10px}
+section.s{padding:56px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:30px}
+.sec-head h2{font-size:1.55rem;font-weight:750;letter-spacing:-.02em}
+.sec-head .idx{color:var(--faint);font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums}
+.sec-sub{color:var(--muted);font-size:.95rem;margin:-18px 0 26px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pillar{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:var(--radius);padding:24px;transition:.18s}
+.pillar:hover{border-color:#34415c;transform:translateY(-3px)}
+.pillar .ic{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);border:1px solid #3a2d5c;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px}
+.pillar h3{font-size:1.08rem;font-weight:750;margin-bottom:7px}
+.pillar .en{color:var(--accent);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px}
+.pillar p{color:var(--muted);font-size:.92rem}
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl{position:relative;padding-bottom:32px}.tl:last-child{padding-bottom:0}
+.tl::before{content:"";position:absolute;left:-24px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.tl .when{color:var(--faint);font-size:.82rem;font-weight:600;font-variant-numeric:tabular-nums}
+.tl .org{font-size:1.14rem;font-weight:700;margin:3px 0 2px}.tl .pos{color:var(--accent);font-size:.9rem;font-weight:600;margin-bottom:10px}
+.tl ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tl li{color:var(--muted);font-size:.93rem;padding-left:16px;position:relative}
+.tl li::before{content:"–";position:absolute;left:0;color:var(--faint)}
+.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.proj{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:.18s}
+.proj:hover{border-color:#4a3c78;transform:translateY(-3px)}
+.proj .thumb{height:120px;display:flex;align-items:center;justify-content:center;padding:0 20px;text-align:center;border-bottom:1px solid var(--line)}
+.proj.sm .thumb{height:92px}
+.proj .thumb .ph{color:rgba(255,255,255,.9);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+.proj.sm .thumb .ph{font-size:1.02rem}
+.proj .body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tag{align-self:flex-start;font-size:.72rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid #3a2d5c;padding:3px 10px;border-radius:999px}
+.proj h3{font-size:1.08rem;font-weight:700;letter-spacing:-.01em}
+.proj .q{color:var(--text);font-size:.95rem;font-weight:600}
+.proj p{color:var(--muted);font-size:.92rem;flex:1}
+.kpi{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.kpi span{font-size:.77rem;font-weight:600;color:var(--good);background:rgba(58,214,160,.08);border:1px solid rgba(58,214,160,.25);padding:3px 9px;border-radius:8px}
+.kw{display:flex;flex-wrap:wrap;gap:6px}
+.kw span{font-size:.74rem;color:var(--muted);border:1px solid var(--line);padding:2px 9px;border-radius:999px}
+.more-link{font-size:.82rem;font-weight:600;color:var(--accent)}
+.grp{margin-top:34px}.grp:first-of-type{margin-top:0}
+.grp-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 14px;margin-bottom:14px}
+.grp-h b{font-size:1.12rem}.grp-h span{color:var(--faint);font-size:.85rem}
+.sub-h{margin:18px 0 10px;font-size:.8rem;font-weight:700;letter-spacing:.04em;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:.83rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.box h3{font-size:1rem;font-weight:700;margin-bottom:12px}
+.box ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.box li{color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:12px}
+.box li .dt{color:var(--faint);font-size:.82rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{margin-top:18px;color:var(--faint);font-size:.82rem}
+.closing{padding:72px 0;border-top:1px solid var(--line);text-align:center;background:radial-gradient(700px 300px at 50% 120%,rgba(189,164,255,.14),transparent 60%)}
+.closing p{max-width:640px;margin:0 auto;font-size:1.12rem;line-height:1.8;font-weight:500}
+.closing .small{color:var(--muted);font-size:.95rem;margin-top:20px;font-weight:400}
+footer{padding:36px 0 60px;color:var(--faint);font-size:.85rem;text-align:center}footer a{color:var(--muted)}footer a:hover{color:var(--accent)}
+/* 상세 */
+.cover{border-bottom:1px solid var(--line)}
+.cover .wrap{max-width:820px;padding-top:44px;padding-bottom:40px}
+.back{font-size:.88rem;color:var(--muted)}.back:hover{color:var(--accent)}
+.cover .tag{margin-top:26px;display:inline-block}
+.cover h1{margin-top:14px;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.35;letter-spacing:-.025em;font-weight:800}
+.info{margin-top:20px;display:grid;grid-template-columns:64px 1fr;gap:6px 12px;font-size:.93rem;color:var(--muted)}
+.info i{font-style:normal;color:var(--faint)}
+.cover .kw{margin-top:16px}
+.doc{max-width:820px;margin:0 auto;padding:12px 24px 72px}
+.intro{margin-top:28px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:.98rem}
+.intro p{margin:0}
+.body h2{margin-top:44px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:1.3rem;letter-spacing:-.02em}
+.body h2 span{margin-left:8px;font-size:.8rem;font-weight:600;color:var(--accent)}
+.body h3{margin-top:26px;font-size:1.05rem}
+.body p{margin-top:12px;color:#d6d0e2;font-size:1rem}.body ul,.body ol{margin-top:10px;padding-left:20px}
+.body li{margin-top:7px;color:#d6d0e2;font-size:1rem}.body li::marker{color:var(--faint)}
+.body blockquote{margin-top:14px;padding:12px 16px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.body blockquote p{margin-top:0}
+.body table{margin-top:14px;width:100%;border-collapse:collapse;font-size:.92rem;display:block;overflow-x:auto}
+.body th,.body td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:#d6d0e2}
+.body th{font-size:.8rem;color:var(--faint);font-weight:700}
+.body code{font-size:.85rem;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.body pre{margin-top:12px;background:var(--surface);border:1px solid var(--line);padding:14px;border-radius:10px;overflow-x:auto;font-size:.82rem;color:var(--muted)}
+.body hr{display:none}
+.body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.pager{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.92rem}
+.pager a{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 16px;transition:.15s}
+.pager a:hover{border-color:var(--accent)}.pager small{display:block;color:var(--faint);font-size:.75rem}.pager .nx{text-align:right;grid-column:2}
+@media (max-width:760px){.hero-grid{grid-template-columns:1fr}.portrait{display:none}}
+@media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.projects,.grid2,.pillars{grid-template-columns:1fr}
+header.hero{padding:64px 0 40px}nav.top .menu{display:none}}
+</style></head><body><nav class="top"><div class="wrap"><a class="brand" href="../index.html">Jung Yerin<span class="accent">.</span></a><div class="menu"><a href="../index.html#ways">일하는 방식</a><a href="../index.html#featured">대표 케이스</a><a href="../index.html#career">경력</a><a href="../index.html#projects">전체 경험</a><a href="../index.html#more">이력</a></div></div></nav><header class="cover" style="background:linear-gradient(135deg,rgba(189,164,255,.22),rgba(255,158,201,.22))"><div class="wrap"><a class="back" href="../index.html#projects">← 전체 경험</a><br><span class="tag">토스증권 · 세액공제 계산기 A/B 실험</span><h1>세액공제 계산기 A/B 실험 — &quot;계산기 쓴 사람이 더 연다&quot;는 관찰을 무작위 실험으로 검증</h1><div class="info"><i>소속</i><span>토스증권</span><i>기간</i><span>2026.10</span><i>역할</i><span>실험 설계·결정 논의 참여 · 계산기 페이지와 자주 묻는 질문 로그 설계·QA</span></div><div class="kw"><span>A/B 실험 · 로그 설계 · 알파 QA</span><span>실험 설계 · 결과 해석 · 의사결정 지원</span></div></div></header><main class="doc"><div class="intro"><p>연금저축 개설 인트로의 세액공제 계산기를 두고, 담당 DA와 함께 설계한 A/B 실험(A/B Test)입니다. 저는 실험 설계부터 의사결정 논의까지 참여했고, 판정에 쓰인 계산기 페이지 로그를 설계·검증했습니다. 실험 결과물(분석 문서·쿼리)은 담당 DA의 작업이며, 담당 DA의 허락을 받아 싣습니다.</p></div><div class="body"><h2>🎯 핵심 결론</h2>
+<ul>
+<li><strong>결정할 것을 먼저 정하고 설계했습니다.</strong> 「계산기를 펼쳐 두면 개설이 느는가」라는 PO의 질문에 맞춰 배정 시점, 판정 지표, 비교 대상을 정했습니다.</li>
+<li><strong>무작위로 나눈 비교로만 판정했습니다.</strong> 개설률은 유의한 차이가 없었고, 이를 「같다」로 읽지 않고 신뢰구간 상한으로 「효과가 있어도 작다」를 확인했습니다.</li>
+<li><strong>있어도 작은 효과라면 바꾸지 않는 쪽을 택했습니다.</strong> 기존안을 유지하고, 계산기는 개설을 만드는 장치가 아니라 의향 신호로 보기로 했습니다.</li>
+</ul>
+<hr />
+<h2>Background — 배경</h2>
+<p>연금저축 개설 인트로를 개편한 뒤, <strong>세액공제 계산기를 써 본 유저의 개설률이 쓰지 않은 유저의 약 1.7배</strong>라는 관찰이 나왔습니다. 계산기를 더 잘 보이게 하면 개설이 늘 것처럼 보이는 숫자였습니다.</p>
+<p>하지만 계산기를 쓸지는 유저가 스스로 고릅니다. 연금에 관심이 큰 사람이 계산기도 누르고 계좌도 열었을 수 있습니다(선택 편향, Selection Bias). 앞선 전후 비교 분석도 "인과로 볼 수 없으니 무작위 실험이 필요하다"고 결론 냈습니다.</p>
+<blockquote>
+<p><strong>의사결정 질문</strong>: 계산기를 인트로에 펼쳐 두면 개설이 늘어나는가?</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A 기존안(대조군, Control)</th>
+<th>B 펼침(실험군, Variant)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>계산기</td>
+<td>「직접 계산해보기」를 누르면 별도 계산기 페이지로</td>
+<td>급여 기준·입금액을 인트로에서 바로 조절</td>
+</tr>
+<tr>
+<td>약관으로 가는 버튼</td>
+<td>인트로 하단 버튼 + <strong>계산기 페이지 하단 버튼</strong> (2갈래)</td>
+<td>인트로 하단 버튼 (1갈래)</td>
+</tr>
+</tbody>
+</table>
+<h2>Experiment Design — 실험 설계</h2>
+<p><strong>실험 전에 정한 결과별 행동</strong></p>
+<table>
+<thead>
+<tr>
+<th>결과</th>
+<th>할 일</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B가 유의하게 우세</td>
+<td>계산기 노출 확대</td>
+</tr>
+<tr>
+<td>A가 유의하게 우세</td>
+<td>「1.7배」는 상관으로 정리</td>
+</tr>
+</tbody>
+</table>
+<p><strong>담당 DA·PO와 함께 정한 설계, 그리고 이유</strong></p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>정한 것</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>배정</td>
+<td>인트로에 들어오는 순간, 유저 단위 50:50 무작위 배정(Randomization). 두 안에 모두 배정된 유저·임직원 제외</td>
+<td>화면을 본 사람만 분모에 넣기 위해. 더 일찍 배정하면 효과를 받을 수 없는 사람이 섞여 효과가 희석되고 표본이 더 필요</td>
+</tr>
+<tr>
+<td>판정 지표(Primary Metric)</td>
+<td>인트로 → 개설, 계좌 원장 기준</td>
+<td>배정 시점부터 끝까지 재야 공정. 로그 유실이 결론을 흔들지 않게</td>
+</tr>
+<tr>
+<td>비교 대상</td>
+<td>출시할 화면 그대로 (A의 계산기 페이지 버튼 유지)</td>
+<td>질문이 「어느 화면을 낼까」. 버튼을 빼면 출시하지 않을 화면끼리 비교하게 됨</td>
+</tr>
+<tr>
+<td>보조·점검</td>
+<td>약관 진입(보호 지표, Guardrail Metric), 유입 경로별 방향</td>
+<td>피해를 빨리 보는 조기 경보, 결과가 한 유입에 끌려가지 않는지 확인</td>
+</tr>
+<tr>
+<td>기간·검정력(Power)</td>
+<td>6일. 기준 개설률을 가정해 필요한 표본을 사전 계산</td>
+<td>잡고 싶은 효과 크기를 이 기간에 잡을 수 있는지 먼저 확인</td>
+</tr>
+</tbody>
+</table>
+<h2>Interpretation — 결과 해석</h2>
+<p>같은 실험 데이터 안에도 성격이 다른 비교가 섞여 있어, <strong>누가 나눈 비교인지</strong>부터 구분했습니다.</p>
+<table>
+<thead>
+<tr>
+<th>비교</th>
+<th>누가 나눴나</th>
+<th>쓰임</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 전체 vs B 전체</td>
+<td>시스템이 무작위로</td>
+<td><strong>판정</strong></td>
+</tr>
+<tr>
+<td>계산기 쓴 사람 vs 안 쓴 사람</td>
+<td>유저가 스스로</td>
+<td>원인 설명에만</td>
+</tr>
+<tr>
+<td>약관까지 온 사람끼리 A vs B</td>
+<td>앞 화면이 걸러냄</td>
+<td>원인 설명에만</td>
+</tr>
+</tbody>
+</table>
+<p><strong>① 판정 — 「같다」가 아니라 「확인하지 못했다」</strong>
+개설률은 <strong>유의한 차이가 없었습니다.</strong> 신뢰구간(Confidence Interval)이 0을 품어 방향도 정할 수 없지만, 구간의 <strong>상한</strong>은 B가 가장 잘 풀린 경우의 크기를 알려 줍니다. 그 상한이 작아 「효과가 있어도 작다」고 읽었습니다.</p>
+<p><strong>② 계산기 효과인가 — 선택 편향</strong>
+B에서 계산기 사용자는 <strong>약 4배</strong>로 늘었습니다. 계산기가 개설을 만든다면 사용이 는 만큼 B 전체 개설률이 올라야 합니다. 그런데 신뢰구간 상한조차 「늘어난 사용이 전부 효과라면」 예측되는 상승폭의 <strong>약 1/4</strong>에 그쳤습니다. 계산기 사용자의 높은 개설률은 주로 <strong>원래 의향 차이</strong>라고 판단했습니다.</p>
+<p><strong>③ 약관 진입이 줄었는데 해로운가 — 경로 분해</strong>
+B의 약관 진입은 유의하게 낮았지만, 감소분의 <strong>약 80%가 A에만 있던 계산기 페이지 하단 버튼 경로</strong>였고, 이 경로로 약관에 간 유저는 개설로 잘 이어지지 않았습니다. 약관 진입은 중간 단계라, A는 버튼이 하나 더 있어 숫자가 커졌을 뿐이라고 보았습니다. 이 분해는 계산기 페이지 버튼이 로그에서 별도 구획으로 남아 있어 가능했습니다.</p>
+<p>유입 경로별로 쪼개도 방향이 같아, 실험 기간의 대량 푸시가 결과를 끌고 가지 않았음도 확인했습니다.</p>
+<blockquote>
+<p>유저수·전환율 등 사내 지표의 구체 값은 제외하고, 방향·배수·비율만 기재했습니다.</p>
+</blockquote>
+<h2>Decision — 결론</h2>
+<p>결과는 실험 전에 정한 두 경우 어디에도 해당하지 않는 「유의한 차이 없음」이었습니다. 그래서 근거를 다시 세웠습니다.</p>
+<ul>
+<li>B가 낫다는 증거가 없고</li>
+<li>신뢰구간 상한으로 보면 효과가 있어도 작으며</li>
+<li>바꾸는 비용(개발·QA·로그 재정비)은 확실했습니다</li>
+</ul>
+<p>→ <strong>실험 종료, 기존안(A) 유지.</strong> 계산기는 개설을 만드는 장치가 아니라 <strong>의향 높은 유저를 알려 주는 신호</strong>로 쓰기로 했습니다. 개설률은 화면보다 <strong>어떤 경로로 들어왔는지에 따라</strong> 훨씬 크게 갈려, 다음 개선은 유입 경로와 자주 묻는 질문 쪽으로 옮기기로 했습니다.</p>
+<h2>My Role — 내 역할</h2>
+<ul>
+<li><strong>설계·결정 논의 참여</strong> — 위 설계와 결과 해석, 기존안 유지 결정까지 담당 DA·PO와 함께 논의했습니다.</li>
+<li><strong>판정에 쓰인 로그 구획</strong> — 월간 연금 리포트 작업에서 계산기 페이지의 <strong>계산 영역과 하단 버튼을 별도 구획(section)으로 설계</strong>해 FE에 전달하고, 라이브 배포 전 알파 QA로 발화를 확인했습니다. 이 명세가 실험 판정에 재사용돼 ③의 경로 분해가 가능했습니다.</li>
+<li><strong>새로 측정한 행동</strong> — 이전에는 측정할 수 없던 인트로 자주 묻는 질문의 펼침 로그(문항·펼침 여부·순서)를 정의하고 발화를 확인했습니다.</li>
+</ul>
+<h2>Retrospective — 회고</h2>
+<ul>
+<li><strong>돌아보면 보호 지표가 A에 유리했습니다.</strong> 버튼이 하나 더 있는 A는 약관 진입이 구조적으로 높게 나옵니다. 버튼 수와 무관한 지표(예: 인트로 이탈률)를 골랐다면 해석이 필요 없었을 것이고, 그런 지표를 쓰려면 로그가 명세에 먼저 있어야 하므로 실험 전에 이탈 로그를 확보해 두는 것이 로그 담당으로서 할 수 있었던 일입니다.</li>
+<li><strong>「확인 못 함」일 때의 규칙을 미리 정하지 않았습니다.</strong> 이번에는 결과를 본 뒤 상한으로 판단 근거를 세웠습니다. 「상한이 판정 마진보다 작으면 종료, 크면 연장」을 실험 전에 문서로 남겼다면 결과를 보고 설명하는 모양이 되지 않았을 것입니다.</li>
+<li><strong>검정력이 부족했습니다.</strong> 의향이 낮은 유입이 섞이면서 실제 기준 개설률이 사전 가정보다 낮아져, 같은 기간으로 잡을 수 있는 효과 크기가 커졌습니다. 다음에는 유입 구성을 반영해 표본을 계산하고 기간을 더 길게 잡아야 합니다.</li>
+</ul>
+<h2>🔗 연결 역량</h2>
+<ul>
+<li><strong>실험 설계</strong> — 결정 질문에서 출발한 배정 시점·판정 지표·비교 대상, 결과별 행동 사전 정의</li>
+<li><strong>결과 해석</strong> — 무작위 비교와 스스로 고른 비교 구분, 신뢰구간 상한으로 크기 읽기, 선택 편향·구성 효과(Mix Shift) 분리, 유입별 교차 확인</li>
+<li><strong>로그 설계 · QA</strong> — 분석에 쓰일 구획을 디자인 단계에서 나누고, 배포 전 알파 QA로 발화 확인</li>
+</ul>
+<h2>Learning</h2>
+<p>「유의한 차이 없음」만으로는 결정할 수 없지만, 신뢰구간 상한까지 보면 「있어도 작다」로 결정할 수 있습니다. 그리고 그 결정 기준은 결과를 보기 전에 적어 두어야 합니다.</p>
+<blockquote>
+<p>함께 보기: 같은 사일로의 <a href="cross.html">연금 교차 활성화 분석</a> — 같은 선택 편향 문제를 관측 데이터에서 다룬 사례</p>
+</blockquote></div><div class="pager"><a href="cross.html"><small>← 이전</small>연금 교차 활성화</a><a class="nx" href="yearend.html"><small>다음 →</small>연말 절세 수요 검증</a></div></main><footer class="wrap"><p>© 2026 정예린 (Jung Yerin) · Data Governance Specialist<br>yerin7582@naver.com · <a href="https://github.com/yerinsally" target="_blank" rel="noopener">github.com/yerinsally</a></p></footer></body></html>
